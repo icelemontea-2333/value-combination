@@ -1,0 +1,119 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  font-size: 16px;
+}
+
+@media (min-width: 1920px) and (max-width: 1920px) {
+  :root {
+    font-size: 16px;
+  }
+}
+
+input{
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+textarea{
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+a {
+  text-decoration: inherit;
+  color: rgba(64,64,64,1);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: rgba(64,64,64,1);
+}
+
+/**滚动条 */
+body::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: rgb(255, 150, 150);
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 132, 255, 0.3);
+}
+
+body::-webkit-scrollbar-thumb:active {
+  background: rgba(10, 140, 0, 0.3);
+}
+
+body::-webkit-scrollbar-track {
+  background-color: rgba(220, 220, 220, 1);
+}
+
+body::-webkit-scrollbar-track:hover {
+  box-shadow: 0 0 3px rgba(150,150,150,.25) inset;
+}
+
+body::-webkit-scrollbar-corner{
+  background-color: rgba(200, 220, 220, 1);
+}
+
+body::-webkit-scrollbar-track-piece:hover{
+  background-color: rgb(230, 230, 230);
+}
+
+@media (prefers-color-scheme: light) {
+  
+}
+
+/**测试 */
+.t-bg{
+  background: rgb(0,0,0);
+}
+.t-b{
+  border: rgba(0,0,0,1) 2px dashed;
+  box-sizing: border-box;
+}
+
+/**选中禁止 */ 
+.u-s-t-n{
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+/**提交中 */
+.u-b-s{
+  pointer-events: none;
+  opacity: .75;
+}
+
+/**超出的文字省略 */
+.o-t-e{
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  overflow: hidden;
+}
+
+/**像素字体 */
+@font-face {
+  font-family: Uranus_Pixel;
+  src: url("/font/Uranus_Pixel_11Px.ttf");
+}
