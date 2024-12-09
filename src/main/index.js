@@ -4,26 +4,16 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { uIOhook, UiohookKey } from 'uiohook-napi'
 
-uIOhook.on('keydown', (e) => {
-  if (e.keycode === UiohookKey.Q) {
-    console.log('Hello!')
-  }
-
-  if (e.keycode === UiohookKey.Escape) {
-    process.exit(0)
-  }
-})
-
-uIOhook.start()
-
 function createWindow() {
-  // Create the browser window.
   const mainWindow = new BrowserWindow({
     icon,
-    width: 900,
-    height: 670,
+    width: 200,
+    height: 250,
     show: false,
     autoHideMenuBar: true,
+    frame: false,
+    resizable: false,
+    transparent: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -34,6 +24,13 @@ function createWindow() {
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
+    mainWindow.setAlwaysOnTop(true, "screen-saver")
+    mainWindow.setVisibleOnAllWorkspaces(true)
+    uIOhook.on('keydown', (e) => {
+      mainWindow.webContents.send('onclick-keyboard', e)
+    })
+
+    uIOhook.start()
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -63,9 +60,6 @@ app.whenReady().then(() => {
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
   })
-
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
 
   createWindow()
 

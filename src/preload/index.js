@@ -1,8 +1,10 @@
-import { contextBridge } from 'electron'
+import { contextBridge,ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
-const api = {}
+const api = {
+  onclickKeyboard: (callback) => ipcRenderer.on('onclick-keyboard', callback)
+}
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
@@ -17,4 +19,5 @@ if (process.contextIsolated) {
 } else {
   window.electron = electronAPI
   window.api = api
+  console.log(window)
 }

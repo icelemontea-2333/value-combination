@@ -20,8 +20,10 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
+    "fish-neko": "^1.0.40",
     "gsap": "^3.12.5",
     "pinia": "^2.3.0",
+    "rebuild": "^0.1.2",
     "uiohook-napi": "^1.5.4",
     "vue-router": "^4.5.0"
   },

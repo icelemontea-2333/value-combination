@@ -1,5 +1,5 @@
 appId: com.electron.app
-productName: value-combination
+productName: 小钱钱~
 directories:
   buildResources: build
 files:
@@ -11,7 +11,7 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: value-combination
+  executableName: 小钱钱~
   # 配置图标
   icon: build/icon.ico
 nsis:

@@ -36,46 +36,19 @@ a {
   color: rgba(64,64,64,1);
 }
 
+#app{
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.15);
+  border: rgba(255,255,255,.6) 2px dashed;
+  border-radius: 15px;
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
   color: rgba(64,64,64,1);
-}
-
-/**滚动条 */
-body::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-body::-webkit-scrollbar-thumb {
-  background: rgb(255, 150, 150);
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-body::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 132, 255, 0.3);
-}
-
-body::-webkit-scrollbar-thumb:active {
-  background: rgba(10, 140, 0, 0.3);
-}
-
-body::-webkit-scrollbar-track {
-  background-color: rgba(220, 220, 220, 1);
-}
-
-body::-webkit-scrollbar-track:hover {
-  box-shadow: 0 0 3px rgba(150,150,150,.25) inset;
-}
-
-body::-webkit-scrollbar-corner{
-  background-color: rgba(200, 220, 220, 1);
-}
-
-body::-webkit-scrollbar-track-piece:hover{
-  background-color: rgb(230, 230, 230);
+  -webkit-app-region: drag;
 }
 
 @media (prefers-color-scheme: light) {
