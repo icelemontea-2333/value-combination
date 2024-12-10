@@ -14,7 +14,6 @@
     function showMoneyPop(){
         //计算钱钱
         const money = ((new Date().getTime() - moneyStore.money.updateTime) * moneyStore.money.money / (30 / 7 * moneyStore.money.day) / moneyStore.money.hour / 60 / 60 / 1000).toFixed(3)
-        console.log(moneyStore.money.money)
         fishNeko.$().$(
             fishNeko.fishNeko().$(
                 fishNeko.$("money-pop","section",`+￥${money}`)
@@ -25,6 +24,9 @@
 
     onMounted(()=>{
         window.api.onclickKeyboard((_event, value) => {
+            if(value.keycode == 29 || value.keycode == 42){
+                return;
+            }
             showMoneyPop()
         })
     })
