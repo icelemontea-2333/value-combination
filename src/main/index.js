@@ -7,8 +7,8 @@ import { uIOhook, UiohookKey } from 'uiohook-napi'
 function createWindow() {
   const mainWindow = new BrowserWindow({
     icon,
-    width: 200,
-    height: 250,
+    width: 300,
+    height: 350,
     show: false,
     autoHideMenuBar: true,
     frame: false,
