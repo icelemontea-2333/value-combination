@@ -3,6 +3,13 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { uIOhook, UiohookKey } from 'uiohook-napi'
+import { AzCustomWindowMove } from './windowMove.ts';
+import { loadConfigJson } from './readFile.js';
+
+loadConfigJson()
+
+//自定义窗口拖动
+const CustomWindowMove = new AzCustomWindowMove();
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -22,12 +29,35 @@ function createWindow() {
     }
   })
 
+  //窗体拖拽
+  CustomWindowMove.init(mainWindow);
+
+  // 通信监听
+  ipcMain.on("Main_Window_Operate", (event, info) => {    
+    const operateEvent = info.event || '';
+    switch(operateEvent) {
+        // 拖拽窗口-开始
+        case 'homeDragWindowStart':
+            CustomWindowMove.start();
+            break;
+        // 拖拽窗口-结束
+        case 'homeDragWindowEnd':
+            CustomWindowMove.end();
+            break;
+      default:
+        break;
+    }
+  })
+
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
     mainWindow.setAlwaysOnTop(true, "screen-saver")
     mainWindow.setVisibleOnAllWorkspaces(true)
     uIOhook.on('keydown', (e) => {
-      mainWindow.webContents.send('onclick-keyboard', e)
+      mainWindow.webContents.send('onkeydown-keyboard', e)
+    })
+    uIOhook.on('keyup', (e) => {
+      mainWindow.webContents.send('onkeyup-keyboard', e)
     })
 
     uIOhook.start()

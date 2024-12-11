@@ -3,7 +3,8 @@ import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
 const api = {
-  onclickKeyboard: (callback) => ipcRenderer.on('onclick-keyboard', callback)
+  onkeydownKeyboard: (callback) => ipcRenderer.on('onkeydown-keyboard', callback),
+  onkeyupKeyboard: (callback) => ipcRenderer.on('onkeyup-keyboard', callback)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
@@ -13,6 +14,12 @@ if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
+    contextBridge.exposeInMainWorld('customAPI', {
+      //window拖拽
+      publishMainWindowOperateMessage: (info) => {
+        ipcRenderer.send("Main_Window_Operate", info);
+      }
+    })
   } catch (error) {
     console.error(error)
   }

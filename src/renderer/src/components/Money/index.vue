@@ -1,13 +1,19 @@
 <template>
     <div class="money-container">
-        <section>
-            
+        <!-- 钱钱记录 -->
+        <section class="record-container u-s-t-n">
+            <span class="count-panel">
+                {{ isKeyDown ? '＿' : '︹' }} {{ moneyStore.money.clickCount }}
+            </span>
+            <span class="count-panel">
+                ♡ {{ moneyStore.money.accumulatedMoney.toFixed(3) }}
+            </span>
         </section>
     </div>
 </template>
 
 <script setup>
-    import { onMounted,reactive } from 'vue';
+    import { onMounted,reactive,ref } from 'vue';
     import { fishNeko } from 'fish-neko'
     import useStore from '@renderer/store'
 
@@ -19,20 +25,27 @@
     let timer;
     //节流器作用下是否敲击过键盘
     let isOnclick = false;
+    //是否正在按下键盘
+    let isKeyDown = ref(false);
     
     function showMoneyPop(){
         //计算钱钱
         const money = (new Date().getTime() - moneyStore.money.updateTime) * proportion
         fishNeko.$().$(
             fishNeko.fishNeko().$(
-                fishNeko.$("money-pop","section",`+${money.toFixed(3)}杂鱼♡~`)
+                fishNeko.$("money-pop u-s-t-n","section",`+${money.toFixed(3)}杂鱼♡~`)
             ).destroy(4000)
-        )   
-        moneyStore.money.updateTime = new Date().getTime()
+        )
+        moneyStore.money.updateTime = new Date().getTime();
+        moneyStore.money.accumulatedMoney += money;
     }
 
     onMounted(()=>{
-        window.api.onclickKeyboard((_event, value) => {
+        window.api.onkeydownKeyboard((_event, value) => {
+            if(!isKeyDown.value){
+                moneyStore.money.clickCount++
+                isKeyDown.value = true;
+            }
             if(value.keycode == 29 || value.keycode == 42){
                 return;
             }
@@ -42,6 +55,9 @@
             }else{
                 isOnclick = true;
             }
+        })
+        window.api.onkeyupKeyboard((_event, value) => {
+            isKeyDown.value = false;
         })
     })
 
@@ -63,7 +79,18 @@
 
 <style lang="scss" scoped>
     .money-container{
-        color: rgb(219, 156, 156);
+        .record-container{
+            position: absolute;
+            font-family: 'Uranus_Pixel';
+            color: rgba(255,255,255,1);
+            bottom: 55px;
+            margin-left: 13px;
+            .count-panel{
+                border-bottom: rgba(255,255,255,1) solid 1px;
+                padding: 1px 5px;
+                width: auto;
+            }
+        }
     }
 </style>
 

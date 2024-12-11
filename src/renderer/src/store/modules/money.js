@@ -12,7 +12,11 @@ const useMoney = defineStore('money',()=>{
             //一周多少时间（默认30天）
             day:5,
             //一天多少小时
-            hour:8
+            hour:8,
+            //点击次数
+            clickCount:0,
+            //累计钱钱
+            accumulatedMoney:0
         }
     )
 
