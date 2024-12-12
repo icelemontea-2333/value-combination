@@ -7,11 +7,11 @@ const useMoney = defineStore('money',()=>{
         {
             //上次敲击时间
             updateTime:new Date().getTime(),
-            //一个月有多少钱
-            money:15000,
-            //一周多少时间（默认30天）
+            //钱钱
+            money:10000,
+            //一周天数（默认30天）
             day:5,
-            //一天多少小时
+            //一天小时数
             hour:8,
             //点击次数
             clickCount:0,

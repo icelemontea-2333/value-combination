@@ -83,7 +83,7 @@
             position: absolute;
             font-family: 'Uranus_Pixel';
             color: rgba(255,255,255,1);
-            bottom: 55px;
+            bottom: 5px;
             margin-left: 13px;
             .count-panel{
                 border-bottom: rgba(255,255,255,1) solid 1px;
@@ -99,18 +99,18 @@
         .money-pop{
             font-size: 20px;
             position: fixed;
-            right: 60px;
+            right: 10px;
             color: rgb(255, 216, 216);
             animation: animation-money-pop-move-20241292214 4s forwards;
             white-space: nowrap;
             font-family: 'Uranus_Pixel';
             @keyframes animation-money-pop-move-20241292214 {
                 0%{
-                    bottom: 65px;
+                    bottom: 15px;
                     opacity: 1;
                 }
                 100%{
-                    bottom: calc(100% - 100px);
+                    bottom: calc(100% - 50px);
                     opacity: 0;
                 }
             }

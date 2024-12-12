@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain,Tray, Menu, screen } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -14,8 +14,8 @@ const CustomWindowMove = new AzCustomWindowMove();
 function createWindow() {
   const mainWindow = new BrowserWindow({
     icon,
-    width: 300,
-    height: 350,
+    width: 200,
+    height: 250,
     show: false,
     autoHideMenuBar: true,
     frame: false,
@@ -28,6 +28,30 @@ function createWindow() {
       devTools: true
     }
   })
+
+  //新建图标对象
+  const tray = new Tray(icon);
+  
+  //新建菜单内容
+  const trayContextMenu = Menu.buildFromTemplate([{
+      label: '退出',
+          click: () => {
+            app.quit();
+            //退出的方法
+          }
+      }
+  ]);
+  
+  //单击左键触发
+  tray.on('click', () => {
+      //显示窗口的方法
+  });
+  
+  //单机右键触发
+  tray.on('right-click', () => {
+      //显示菜单列表
+      tray.popUpContextMenu(trayContextMenu);
+  });
 
   //窗体拖拽
   CustomWindowMove.init(mainWindow);
@@ -53,13 +77,20 @@ function createWindow() {
     mainWindow.show()
     mainWindow.setAlwaysOnTop(true, "screen-saver")
     mainWindow.setVisibleOnAllWorkspaces(true)
+    //初始位置
+    const primaryDisplay = screen.getPrimaryDisplay()
+    const { width, height } = primaryDisplay.workAreaSize
+    mainWindow.setBounds({
+      x: width - 225,
+      y: height - 305,
+    })
+    //键盘事件
     uIOhook.on('keydown', (e) => {
       mainWindow.webContents.send('onkeydown-keyboard', e)
     })
     uIOhook.on('keyup', (e) => {
       mainWindow.webContents.send('onkeyup-keyboard', e)
     })
-
     uIOhook.start()
   })
 

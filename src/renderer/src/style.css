@@ -39,10 +39,7 @@ a {
 #app{
   height: 100vh;
   width: 100vw;
-  padding: 50px;
   box-sizing: border-box;
-  /* border: rgba(255,255,255,.6) 2px dashed;
-  border-radius: 15px; */
 }
 
 body {
