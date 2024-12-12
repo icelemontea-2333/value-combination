@@ -1,12 +1,10 @@
-import { app, shell, BrowserWindow, ipcMain,Tray, Menu, screen } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, Tray, Menu, screen } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { uIOhook, UiohookKey } from 'uiohook-napi'
 import { AzCustomWindowMove } from './windowMove.ts';
-import { loadConfigJson } from './readFile.js';
-
-loadConfigJson()
+import { loadConfigJson,writeConfigJson } from './readFile.js';
 
 //自定义窗口拖动
 const CustomWindowMove = new AzCustomWindowMove();
@@ -71,6 +69,16 @@ function createWindow() {
       default:
         break;
     }
+  })
+
+  //写入配置
+  ipcMain.handle('write-config',(event,data)=>{
+    writeConfigJson(data);
+  })
+
+  //加载配置
+  ipcMain.handle('load-config',(event)=>{
+    return loadConfigJson();
   })
 
   mainWindow.on('ready-to-show', () => {

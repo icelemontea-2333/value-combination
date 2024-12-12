@@ -4,7 +4,9 @@ import { electronAPI } from '@electron-toolkit/preload'
 // Custom APIs for renderer
 const api = {
   onkeydownKeyboard: (callback) => ipcRenderer.on('onkeydown-keyboard', callback),
-  onkeyupKeyboard: (callback) => ipcRenderer.on('onkeyup-keyboard', callback)
+  onkeyupKeyboard: (callback) => ipcRenderer.on('onkeyup-keyboard', callback),
+  writeConfig: (callback) => ipcRenderer.invoke('write-config', callback),
+  loadConfig: (callback) => ipcRenderer.invoke('load-config', callback),
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

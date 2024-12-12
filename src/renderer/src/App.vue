@@ -5,13 +5,17 @@
     <!-- 拖拽 -->
     <div class="drag-area" @mousedown="handleMouseDown"/>
     <!-- 菜单按钮 -->
-    <section class="menu-container">
+    <section class="menu-container" @click="writeConfig">
       <div class="menu-button">
         <div class="circle circle-1"></div>
         <div class="circle circle-2"></div>
         <div class="circle circle-3"></div>
       </div>
     </section>
+    <div class="back-shadow-container">
+      <div class="back-shadow-top"></div>
+      <div class="back-shadow-bottom"></div>
+    </div>
     <!-- <command-single/> -->
   </div>
 </template>
@@ -20,12 +24,34 @@
   import { provide,onMounted,reactive } from 'vue'
   import { utils,cmd } from '@renderer/utils/cmd-style'
   import { CommandSingle } from '@renderer/utils/cmd-style/single'
+  import useStore from '@renderer/store'
+  import { nekoTipsF } from 'fish-neko'
 
-  const command = cmd.create()
+  const moneyStore = useStore().money;
+
+  const command = cmd.create({
+    logo:'/favicon.ico'
+  })
   const create = utils.create(command);
 
   provide('command',command)
   provide('create',create)
+
+  async function writeConfig(){
+    window.api.writeConfig(JSON.stringify(moneyStore.money));
+    nekoTipsF("保存成功")
+  }
+  
+  onMounted(async ()=>{
+    //加载存档
+    if(window.api.loadConfig != null){
+      const text = await window.api.loadConfig()
+      if(text != null){
+        moneyStore.money = JSON.parse(text)
+        moneyStore.money.updateTime = new Date().getTime()
+      }
+    }
+  })
 
   //窗口拖拽
   const winDrag = reactive({
@@ -50,7 +76,6 @@
   .app-container{
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, .15);
     border: rgba(255,255,255,.6) 2px dashed;
     border-radius: 15px;
     box-sizing: border-box;
@@ -62,12 +87,12 @@
       height: 6px;
       width: 50px;
       z-index: 0;
-      opacity: .35;
+      opacity: .45;
       border: rgba(255,255,255,1) 2px solid;
       border-radius: 5px;
       transition: opacity .5s,width .5s;
       &:hover{
-        opacity: .75;
+        opacity: .85;
         width: 75px;
       }
     }
@@ -81,6 +106,9 @@
           rotate: 145deg;
           transform: translate(2px,-2px);
           opacity: 1;
+          .circle{
+            border: rgb(255, 255, 255) 2px solid;
+          }
           .circle-1{
             transform: translate(5px,4px);
           }
@@ -98,15 +126,36 @@
         display: flex;
         align-items: center;
         transition:rotate .35s,transform .35s;
-        opacity: .75;
+        opacity: .85;
         .circle{
           margin: 0 1px;
           width: 4px;
           height: 4px;
           border-radius: 50%;
-          border: rgb(241, 183, 183) 2px solid;
+          border: rgb(255, 220, 220) 2px solid;
           transition:transform .35s;
         }
+      }
+    }
+    // 阴影背景
+    .back-shadow-container{
+      position: absolute;
+      width: calc(100vw - 2px);
+      height: calc(100vh - 2px);
+      pointer-events: none;
+      border-radius: 15px;
+      overflow: hidden;
+      z-index: -1;
+      .back-shadow-top{
+        position: absolute;
+        width: 100%;
+        box-shadow: 0 0 75px 10px rgba(0,0,0,1);
+      }
+      .back-shadow-bottom{
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        box-shadow: 0 0 100px 15px rgba(0,0,0,1);
       }
     }
   }

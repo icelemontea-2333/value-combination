@@ -27,13 +27,17 @@
     let isOnclick = false;
     //是否正在按下键盘
     let isKeyDown = ref(false);
+    //颜色最小值
+    const colorMin = 150
     
     function showMoneyPop(){
         //计算钱钱
         const money = (new Date().getTime() - moneyStore.money.updateTime) * proportion
         fishNeko.$().$(
             fishNeko.fishNeko().$(
-                fishNeko.$("money-pop u-s-t-n","section",`+${money.toFixed(3)}杂鱼♡~`)
+                fishNeko.$("money-pop u-s-t-n","section",`+${money.toFixed(3)}杂鱼♡~`).$((self)=>{
+                    self.value.style.color = `rgba(${colorMin + Math.floor(Math.random() * (255 - colorMin))},${colorMin + Math.floor(Math.random() * (255 - colorMin))},${colorMin + Math.floor(Math.random() * (255 - colorMin))},1)`
+                })
             ).destroy(4000)
         )
         moneyStore.money.updateTime = new Date().getTime();
@@ -43,7 +47,7 @@
     onMounted(()=>{
         window.api.onkeydownKeyboard((_event, value) => {
             if(!isKeyDown.value){
-                moneyStore.money.clickCount++
+                moneyStore.money.clickCount++;
                 isKeyDown.value = true;
             }
             if(value.keycode == 29 || value.keycode == 42){
@@ -66,7 +70,7 @@
             return;
         }
         timer = setTimeout(() => {
-            timer = null
+            timer = null;
             isOnclick = false;
             if(isOnclick){
                 showMoneyPop();
