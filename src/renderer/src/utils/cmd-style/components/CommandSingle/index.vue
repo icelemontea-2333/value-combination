@@ -16,7 +16,7 @@
                 <div v-if="menuInfo.windowType == 1 || menuInfo.windowType == 2" class="maximize common-button" @click="menuInfo.windowType = 0">
                     <svg viewBox="0 0 42 32"><path d="M 16 13 L 24 13 L 24 21 L 16 21 L 16 13 M 17 10 L 27 10 L 27 20" stroke="black" stroke-width="1" fill="none"/></svg>
                 </div>
-                <div class="close common-button" @click="menuInfo.windowType = 3">
+                <div class="close common-button" @click="onClickClose()">
                     <svg viewBox="0 0 42 32"><path d="M 16 11 L 26 21 M 26 11 L 16 21" stroke="black" stroke-width="1" fill="none"/></svg>
                 </div>
             </div>
@@ -60,12 +60,13 @@
 </template>
 
 <script setup>
-    import { ref,reactive,onMounted,onBeforeUnmount,inject,watchEffect } from 'vue'
+    import { ref,reactive,onMounted,onBeforeUnmount,inject,watchEffect,defineEmits } from 'vue'
     import { utils,config,cmd,proxyTransfer } from '../../index.js'
 
     import md5 from '../../utils/md5/md5.js'
 
     const props = defineProps(['cmd'])
+    const emit = defineEmits(['onclose'])
 
     //创建command
     const command = inject('command');//{url:[{url:'/builder',command:['/ 返回后台 /']}],prologueList:['喵呜']}
@@ -84,6 +85,12 @@
 
     //移交代理 -> 需要在最后释放 -> 已不必手动释放
     proxyTransfer.connect(inputInfo,menuInfo,commandData);
+
+    //Close
+    function onClickClose(){
+        menuInfo.windowType = 3;
+        emit("onclose");
+    }
 
     //Enter
     function onkeydownEnter(){

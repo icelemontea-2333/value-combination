@@ -81,6 +81,22 @@ function createWindow() {
     return loadConfigJson();
   })
 
+  //窗口大小
+  ipcMain.handle('win-size',(event,config)=>{
+    if(config == undefined){ config = {} }
+    const boundsInfo = mainWindow.getNormalBounds()
+    mainWindow.setBounds({
+      width: config.width ?? boundsInfo.width,
+      height: config.height ?? boundsInfo.height,
+      x: config.x ?? boundsInfo.x,
+      y: config.y ?? boundsInfo.y,
+    })
+    if(config.isCenter){
+      mainWindow.center();
+    }
+    return mainWindow.getNormalBounds();
+  })
+
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
     mainWindow.setAlwaysOnTop(true, "screen-saver")

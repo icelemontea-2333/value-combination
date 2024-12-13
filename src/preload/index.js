@@ -7,6 +7,7 @@ const api = {
   onkeyupKeyboard: (callback) => ipcRenderer.on('onkeyup-keyboard', callback),
   writeConfig: (callback) => ipcRenderer.invoke('write-config', callback),
   loadConfig: (callback) => ipcRenderer.invoke('load-config', callback),
+  setWinSize: (callback) => ipcRenderer.invoke('win-size', callback),
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

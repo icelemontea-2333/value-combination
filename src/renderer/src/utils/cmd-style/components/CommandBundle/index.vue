@@ -73,13 +73,14 @@
 </template>
 
 <script setup>
-    import { ref,reactive,onMounted,onBeforeUnmount,inject,watchEffect } from 'vue'
+    import { ref,reactive,onMounted,onBeforeUnmount,inject,watchEffect,defineEmits } from 'vue'
     import { useRoute,useRouter } from 'vue-router'
     import { utils,config,cmd,proxyTransfer } from '../../index.js'
 
     import md5 from '../../utils/md5/md5.js'
 
     const props = defineProps(['cmd'])
+    const emit = defineEmits(['onclose'])
     const route = useRoute();
     const router = useRouter();
 
@@ -100,6 +101,12 @@
 
     //移交代理 -> 需要在最后释放 -> 已不必手动释放
     proxyTransfer.connect(inputInfo,menuInfo,commandData);
+    
+    //Close
+    function onClickClose(){
+        menuInfo.windowType = 3;
+        emit("onclose");
+    }
 
     //Enter
     function onkeydownEnter(){

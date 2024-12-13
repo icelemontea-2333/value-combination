@@ -2,10 +2,12 @@
   <div class="app-container" :class="{'app-container-isdrag':winDrag.isDrag}">
     <!--路由组件出口的地方-->
     <router-view/>
+    <!-- CMD -->
+    <command v-if="appData.isOpenCommand" :isOpenCommand="appData.isOpenCommand" @onclose="onclose"/>
     <!-- 拖拽 -->
     <div class="drag-area" @mousedown="handleMouseDown"/>
     <!-- 菜单按钮 -->
-    <section class="menu-container" @click="writeConfig">
+    <section class="menu-container" @click="openCommand">
       <div class="menu-button">
         <div class="circle circle-1"></div>
         <div class="circle circle-2"></div>
@@ -16,30 +18,38 @@
       <div class="back-shadow-top"></div>
       <div class="back-shadow-bottom"></div>
     </div>
-    <!-- <command-single/> -->
   </div>
 </template>
 
 <script setup>
   import { provide,onMounted,reactive } from 'vue'
-  import { utils,cmd } from '@renderer/utils/cmd-style'
-  import { CommandSingle } from '@renderer/utils/cmd-style/single'
+  import Command from '@renderer/components/Command/index.vue'
   import useStore from '@renderer/store'
   import { nekoTipsF } from 'fish-neko'
-
+  
   const moneyStore = useStore().money;
-
-  const command = cmd.create({
-    logo:'/favicon.ico'
+  
+  const appData = reactive({
+    isOpenCommand:false,
+    originWinSize:null
   })
-  const create = utils.create(command);
 
-  provide('command',command)
-  provide('create',create)
+  //CMD
+  async function openCommand(){
+    if(appData.originWinSize == null){
+      appData.originWinSize = await window.api.setWinSize()
+    }
+    window.api.setWinSize({
+      width:800,
+      height:500,
+      isCenter:true
+    })
+    appData.isOpenCommand = true
+  }
 
-  async function writeConfig(){
-    window.api.writeConfig(JSON.stringify(moneyStore.money));
-    nekoTipsF("保存成功")
+  function onclose(){
+    appData.isOpenCommand = false
+    window.api.setWinSize({...appData.originWinSize})
   }
   
   onMounted(async ()=>{
@@ -74,6 +84,7 @@
 
 <style lang="scss" scoped>
   .app-container{
+    position: absolute;
     width: 100vw;
     height: 100vh;
     border: rgba(255,255,255,.6) 2px dashed;
@@ -163,6 +174,6 @@
     background: rgba(0, 0, 0, .75);
     border: rgba(255,255,255,.1) 2px dashed;
     border-bottom: rgba(255,255,255,.75) 2px solid;
-    border-radius: 5px 5px 0 0;
+    border-radius: 15px 15px 0 0;
   }
 </style>
